@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-
 import Paths from '../constants/Paths';
 import UserRoutes from './UserRoutes';
 import AuthRoutes from './AuthRoutes';
@@ -24,11 +23,11 @@ userRouter.get(
 );
 
 // Get one user
-userRouter.get(
-  Paths.Users.GetOne,
+//userRouter.get(
+//  Paths.Users.GetOne,
     // @ts-ignore
-  UserRoutes.getOne,
-);
+//  UserRoutes.getOne,
+//);
 
 // Add one user
 userRouter.post(
