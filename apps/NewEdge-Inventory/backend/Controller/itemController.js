@@ -54,13 +54,14 @@ export const fetchItem = async (req, res) => {
 //UPDATE
 export const updateItem = async (req, res) => {
   const ItemId = req.params.id;
-  const { name, unit,brand,unit_price, description } = req.body;
+  const { name, unit,brand,unit_price, description,category_id } = req.body;
 
   const Item = await prisma.item.update({
     where: {
       id: Number(ItemId),
     },
     data: {
+        category_id:category_id,
         name: name,
         unit: unit,
         brand: brand,

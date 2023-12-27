@@ -71,27 +71,24 @@ export const createStockOut = async (req, res) => {
   });
 };
 
-
-
-
-
-
-
-
-
-
 //READ
 export const fetchStockOuts = async (req, res) => {
-  const stockOuts = await prisma.stockOut.findMany({ });
+  const stockOuts = await prisma.stockOut.findMany({ 
+    include:{
+      ItemInstance_ids:true
+    }
+  });
   return res.json({ status: 200, data: stockOuts });
 };
-
 export const fetchStockOut = async (req, res) => {
   const StockOutId = req.params.id;
   const StockOut = await prisma.stockOut.findFirst({
     where: {
       id: StockOutId,
     },
+    include:{
+      ItemInstance_ids:true
+    }
   });
   return res.json({ status: 200, data: StockOut });
 };

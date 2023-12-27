@@ -22,7 +22,7 @@ model Category {
 
 model Item {
   id            Int            @id @default(autoincrement())
-  category      Category       @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  category      Category       @relation(fields: [category_id], references: [id])
   category_id   Int
   name          String
   brand         String?
@@ -38,14 +38,15 @@ model Item {
 
 model ItemInstance {
   id      Int    @id @default(autoincrement())
-  status  String @default("inStock")
-  item    Item   @relation(fields: [item_id], references: [id], onDelete: Cascade)
+  item    Item   @relation(fields: [item_id], references: [id])
   item_id Int
+  status  String @default("inStock")
+  status_details String?
 
   stockOut     StockOut? @relation(fields: [stock_out_id], references: [id])
   stock_out_id String?
 
-  stockIn     StockIn @relation(fields: [stock_in_id], references: [id])
+  stockIn     StockIn @relation(fields: [stock_in_id], references: [id],onDelete: Cascade)
   stock_in_id String
 }
 
@@ -55,8 +56,8 @@ model StockIn {
   item             Item           @relation(fields: [item_id], references: [id], onDelete: Cascade)
   item_id          Int
   qty              Int
-  ItemInstance_ids ItemInstance[]
-  type             String         @default("Purchased")
+  type             String         @default("Purchased") //purchased
+  ItemInstance_ids ItemInstance[] 
   created_at       DateTime       @default(now())
 }
 
@@ -65,7 +66,7 @@ model StockOut {
   item             Item           @relation(fields: [item_id], references: [id], onDelete: Cascade)
   item_id          Int
   qty              Int
+  type             String         @default("Sales") //sales, issused , damaged
   ItemInstance_ids ItemInstance[]
-  type             String         @default("Sales")
   created_at       DateTime       @default(now())
 }
