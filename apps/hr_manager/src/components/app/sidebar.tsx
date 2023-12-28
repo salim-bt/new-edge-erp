@@ -1,7 +1,7 @@
-import React, { type ReactNode } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import Link from 'next/link';
+import { type ReactNode } from 'react';
 
 export type SideLink = {
     href: string;
@@ -28,8 +28,8 @@ export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
                             className="rounded-full mt-32"
                             src="https://avatars.githubusercontent.com/u/25105891?s=200&v=4"
                             alt="Workflow"
-                            width={100}
-                            height={100}
+                            width={50}
+                            height={50}
                         />
                         <p className="ml-2 mt-32 text-lg font-semibold">
                             <a className="text-sm font-bold text-white">
