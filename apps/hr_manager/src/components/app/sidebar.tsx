@@ -9,13 +9,13 @@ export type SideLink = {
     icon: ReactNode;
 }
 
-type sidebarProps = {
+type SidebarProps = {
     links: SideLink[];
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
 }
 
-export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
+export default function Sidebar({ links, sidebarOpen}: SidebarProps) {
     return (
         <div
             className={`bg-black/80 backdrop-blur-2xl w-96 transition-[margin-left] ease-in-out duration-500 fixed top-0 bottom-0 left-0 lg:ml-0 ${sidebarOpen ? " -ml-96" : " ml-0"}`
@@ -42,10 +42,10 @@ export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
                         {links.map((link) => (
                             <Link href={link.href} key={link.href}>
                                 <Button
-                                    className="group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                                    className="group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-gray-700"
                                 >
                                     {link.icon}
-                                    {link.label}
+                                    <span className="ml-2">{link.label}</span>
                                 </Button>
                             </Link>
                         ))}

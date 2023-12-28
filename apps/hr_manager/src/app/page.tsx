@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
-import {Progress} from "@/components/ui/progress";
+import { Progress } from "@/components/ui/progress";
 import { IceCreamIcon } from "lucide-react";
+import Image from "next/image";
 type CardDetails = {
     title: string;
     current: number;
@@ -44,7 +44,7 @@ export default async function Home() {
     ]
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center mt-32 lg:pl-96 justify-start bg-white/20">
+    <main className="flex min-h-screen w-full flex-col items-center mt-1000 lg:pl-96 justify-start bg-white/20">
        <div
            className="flex flex-row items-center p-4 justify-center w-11/12 lg:w-5/6 rounded-lg shadow-md"
            >
