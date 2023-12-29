@@ -1,8 +1,9 @@
+import AppShell from "@/components/app/appshell";
 import "@/styles/globals.css";
+import { TRPCReactProvider } from "@/trpc/react";
+import { ChakraProvider } from '@chakra-ui/react';
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-import { TRPCReactProvider } from "@/trpc/react";
-import AppShell from "@/components/app/appshell";
 import React from "react";
 
 const inter = Inter({
@@ -27,9 +28,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
+        <ChakraProvider> 
             <AppShell>
                 {children}
             </AppShell>
+            </ChakraProvider>
         </TRPCReactProvider>
       </body>
     </html>

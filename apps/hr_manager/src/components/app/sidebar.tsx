@@ -1,7 +1,7 @@
-import React, { type ReactNode } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import Image from 'next/image';
+import Link from 'next/link';
+import { type ReactNode } from 'react';
 
 export type SideLink = {
     href: string;
@@ -9,13 +9,13 @@ export type SideLink = {
     icon: ReactNode;
 }
 
-type sidebarProps = {
+type SidebarProps = {
     links: SideLink[];
     sidebarOpen: boolean;
     setSidebarOpen: (open: boolean) => void;
 }
 
-export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
+export default function Sidebar({ links, sidebarOpen}: SidebarProps) {
     return (
         <div
             className={`bg-black/80 backdrop-blur-2xl w-96 transition-[margin-left] ease-in-out duration-500 fixed top-0 bottom-0 left-0 lg:ml-0 ${sidebarOpen ? " -ml-96" : " ml-0"}`
@@ -28,8 +28,8 @@ export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
                             className="rounded-full mt-32"
                             src="https://avatars.githubusercontent.com/u/25105891?s=200&v=4"
                             alt="Workflow"
-                            width={100}
-                            height={100}
+                            width={50}
+                            height={50}
                         />
                         <p className="ml-2 mt-32 text-lg font-semibold">
                             <a className="text-sm font-bold text-white">
@@ -42,10 +42,10 @@ export default function Sidebar({ links, sidebarOpen}: sidebarProps) {
                         {links.map((link) => (
                             <Link href={link.href} key={link.href}>
                                 <Button
-                                    className="group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                                    className="group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-gray-700"
                                 >
                                     {link.icon}
-                                    {link.label}
+                                    <span className="ml-2">{link.label}</span>
                                 </Button>
                             </Link>
                         ))}

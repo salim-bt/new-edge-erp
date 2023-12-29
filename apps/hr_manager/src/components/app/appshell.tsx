@@ -1,10 +1,8 @@
 "use client";
-import React from 'react'
-import { type ReactNode } from "react";
-import Sidebar from '@/components/app/sidebar';
-import { type SideLink } from '@/components/app/sidebar';
-import { BookHeart, BookTemplate } from "lucide-react";
 import Header from '@/components/app/header';
+import Sidebar, { type SideLink } from '@/components/app/sidebar';
+import { ClipboardSignature, Cog, LayoutGrid, LogOut, UsersRound } from "lucide-react";
+import React, { type ReactNode } from 'react';
 export type ShellProps = {
     children: ReactNode;
 };
@@ -12,8 +10,12 @@ export type ShellProps = {
 export default function AppShell({ children }: ShellProps) {
 
     const links: SideLink[] = [
-        { href: "/", label: "Home", icon:<BookHeart /> },
-        { href: "/about", label: "About", icon: <BookTemplate /> },
+        { href: "/", label: "Dash Board", icon:<LayoutGrid/> },
+        { href: "/employeeSearch", label: "Employee", icon: <UsersRound/> },
+        { href: "/leave", label: "Leave", icon: <ClipboardSignature/> },
+        { href: "/admin", label: "Setting", icon: <Cog/> },   
+        { href: "/logout", label: "Logout", icon: <LogOut/> },  
+        
     ];
     const [sidebarOpen, setSidebarOpen] = React.useState(true);
     return (
@@ -21,7 +23,7 @@ export default function AppShell({ children }: ShellProps) {
             className='flex flex-col h-screen w-screen'
         >
             <div
-                className="flex h-full w-full">
+                style={{ marginTop: '100px' }} className="flex items-center justify-center h-full w-full">
                 {children}
             </div>
             <Sidebar
