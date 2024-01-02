@@ -1,3 +1,4 @@
+import e from "cors";
 import prisma from "../DB/db.config.js";
 //CREATE
 export const createItem = async (req, res) => {
@@ -36,6 +37,7 @@ export const fetchItems = async (req, res) => {
     },
     include: {
       category: true,
+      item_instance:true,
     },
   });
   return res.json({ status: 200, data: itmes });
@@ -46,6 +48,10 @@ export const fetchItem = async (req, res) => {
   const Item = await prisma.item.findFirst({
     where: {
       id: Number(ItemId),
+    },
+    include: {
+      category: true,
+      item_instance:true,
     },
   });
   return res.json({ status: 200, data: Item });
@@ -100,4 +106,77 @@ export const deleteItem = async (req, res) => {
   });
 
   return res.json({ status: 200, message: "Item deleted successfully" });
+};
+
+
+
+
+
+
+//Search by name
+export const searchItem = async (req, res) => {
+  try {
+    const findC  = req.query.name;
+
+    if (!findC) {
+      return res.status(400).json({ status: 400, msg: "Name parameter is required for the search." });
+    }
+
+    const foundItems = await prisma.item.findMany({
+      take:5,
+      where: {
+        name: {
+          startsWith: findC,
+          mode: 'insensitive', // Case-insensitive search
+        },
+      },
+      include:{
+        category:true
+      },
+      orderBy:{
+        name:"asc"
+      }
+
+    });
+    return res.json({ status: 200, data: foundItems });
+
+  } catch (error) {
+    console.error("Error searching for items:", error);
+    return res.status(500).json({ status: 500, msg: "Internal server error" });
+  }
+};
+
+// Search by category name
+export const searchItemByCategory = async (req, res) => {
+  try {
+    const categoryName = req.query.name;
+    console.log(categoryName);
+
+    if (!categoryName) {
+      return res.status(400).json({ status: 400, msg: "Name parameter is required for the search." });
+    }
+
+    const foundItems = await prisma.item.findMany({
+      where: {
+        category: {
+          name: {
+            startsWith: categoryName,
+            mode: 'insensitive', // Case-insensitive search
+          },
+        },
+      },
+      include: {
+        category: true,
+      },
+      // orderBy: {
+      //   name: "asc",
+      // },
+    });
+
+    return res.json({ status: 200, data: foundItems });
+
+  } catch (error) {
+    console.error("Error searching for items by category:", error);
+    return res.status(500).json({ status: 500, msg: "Internal server error" });
+  }
 };

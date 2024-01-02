@@ -1,3 +1,4 @@
+import { json } from "express";
 import prisma from "../DB/db.config.js";
 
 //CATEGORY
@@ -72,4 +73,34 @@ export const deleteCategory = async (req, res) => {
     },
   });
   return res.json({ status: 200, message: "Category deleted successfully" });
+}
+
+//Search by name
+export const searchCategory = async (req, res) => {
+  try {
+    const findC  = req.query.name;
+
+    if (!findC) {
+      return res.status(400).json({ status: 400, msg: "Name parameter is required for the search." });
+    }
+
+    const foundCategories = await prisma.category.findMany({
+      take:5,
+      where: {
+        name: {
+          startsWith: findC,
+          mode: 'insensitive', // Case-insensitive search
+        },
+      },
+      orderBy:{
+        name:"asc"
+      }
+
+    });
+    return res.json({ status: 200, data: foundCategories });
+
+  } catch (error) {
+    console.error("Error searching for categories:", error);
+    return res.status(500).json({ status: 500, msg: "Internal server error" });
+  }
 };

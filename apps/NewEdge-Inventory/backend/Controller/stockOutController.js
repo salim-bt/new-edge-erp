@@ -2,11 +2,11 @@ import prisma from "../DB/db.config.js";
 
 // CREATE
 export const createStockOut = async (req, res) => {
-  const { item_id, qty, type } = req.body;
+  const { item_id, qty, type, status_details } = req.body;
 
   // Fetch the current qty_on_hand
   const currentItem = await prisma.item.findUnique({
-    where: {
+    where: { 
       id: Number(item_id),
     },
   });
@@ -59,6 +59,7 @@ export const createStockOut = async (req, res) => {
       data: {
         status: "outOfStock",
         stock_out_id: newStockOut.id,
+        status_details:status_details
       },
     });
     itemInstances.push(updatedItemInstance);
