@@ -12,21 +12,13 @@ import { ClipboardCheck, MailCheck, Settings, UserCog } from 'lucide-react';
 export default function Home() {
     return (  
         <center>      
-            <Flex justifyContent="center" direction="column" alignItems="center" height="100vh" >
+            <Flex justifyContent="center" direction="column" alignItems="center">
                 <Card p="4" shadow="lg" width="700px" className="card" mb="4">
                 <CardHeader>
                     <b>Admin Settings</b>
                 </CardHeader>
                 <CardBody>
                     <Table variant="simple">
-                    {/* <Thead>
-                        <Tr>
-                        <Th> 
-                        
-                        </Th>
-                        <Th>Settings</Th>
-                        </Tr>
-                    </Thead> */}
                     <Tbody>
                         <Tr _hover={{ background: 'gray.100' }}>
                             <Td>

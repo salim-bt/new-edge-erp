@@ -23,7 +23,7 @@ export default function AppShell({ children }: ShellProps) {
             className='flex flex-col h-screen w-screen'
         >
             <div
-                style={{ marginTop: '100px' }} className="flex items-center justify-center h-full w-full">
+                style={{ marginTop: '150px' }} className="flex items-center justify-center h-full w-full">
                 {children}
             </div>
             <Sidebar

@@ -38,18 +38,19 @@ export default function Sidebar({ links, sidebarOpen}: SidebarProps) {
                         </p>
                     </div>
 
-                    <nav className="mt-5 px-2 space-y-1">
+                    <nav className="mt-5 px-5 space-y-1">
                         {links.map((link) => (
-                            <Link href={link.href} key={link.href}>
-                                <Button
-                                    className="group flex items-center px-2 py-2 text-base font-medium rounded-md hover:bg-gray-700"
-                                >
-                                    {link.icon}
-                                    <span className="ml-2">{link.label}</span>
-                                </Button>
-                            </Link>
+                        <Link href={link.href} key={link.href}>
+                        <Button
+                            className="group flex w-full items-center mt-3 px-20 py-3 text-base font-medium rounded-md hover:bg-gray-700"
+                        >
+                        {link.icon}
+                        <span className="ml-2">{link.label}</span>
+                        </Button>
+                        </Link>
                         ))}
                     </nav>
+
                 </div>
             </div>
         </div>
