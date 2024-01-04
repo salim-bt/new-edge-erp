@@ -1,10 +1,10 @@
-import { getServerAuthSession } from "@/server/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LayoutDashboardIcon, CogIcon, MailOpen, SearchIcon, BellIcon, Users2, NewspaperIcon, Calendar, Newspaper, PersonStanding, BookX, GroupIcon, ShoppingBagIcon, LogOutIcon } from "lucide-react";
-import { ModeToggle } from "./dark-mode-toggle";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { getServerAuthSession } from "@/server/auth";
+import { BellIcon, BookX, CogIcon, GroupIcon, LayoutDashboardIcon, LogOutIcon, MailOpen, Newspaper, NewspaperIcon, PersonStanding, SearchIcon, Users2 } from "lucide-react";
+import { ModeToggle } from "./dark-mode-toggle";
 export async function Navbar() {
     const session = await getServerAuthSession();
 
