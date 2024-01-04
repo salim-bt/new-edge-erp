@@ -5,6 +5,8 @@ import { ModeToggle } from "./dark-mode-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { NavLink } from "./navlink";
 export async function Navbar() {
     const session = await getServerAuthSession();
 
@@ -80,7 +82,8 @@ export async function Navbar() {
             <ScrollArea
                 className="flex flex-col flex-grow items-center justify-start max-h-1/4">
                 {sidelinks.map((link) => (
-                    <a
+                    <NavLink
+                        exact
                         key={link.href}
                         href={link.href}
                         className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-6 hover:text-white hover:text-purple-500 dark:hover:text-white  dark:hover:bg-white/20 transition-colors duration-300"
@@ -88,7 +91,7 @@ export async function Navbar() {
                     >
                         {link.icon}
                         <span className="text-md ml-2">{link.title}</span>
-                    </a>
+                    </NavLink>
                 ))}
             </ScrollArea>
             <Separator className="w-11/12 mx-auto my-3" />
@@ -104,8 +107,8 @@ export async function Navbar() {
                     </a>
                 ))}
                 <Button
-                    variant="outline"
-                    className="flex items-center justify-start p-2 w-2/3 rounded-md dark:text-gray-400 mx-2 my-3 hover:text-white hover:bg-red-500  dark:hover:bg-white/20 transition-colors duration-500"
+                    variant="ghost"
+                    className="flex items-center justify-start p-2 w-2/3 rounded-md dark:text-gray-400 mx-2 my-3 hover:text-white dark:hover:bg-red-500  dark:hover:bg-white/20 transition-colors duration-500"
                 >
                     <LogOutIcon className="w-6 h-6" />
                     <span className="text-md ml-2">Logout</span>
@@ -126,3 +129,4 @@ export async function Navbar() {
         </div>
     </div>)
 }
+
