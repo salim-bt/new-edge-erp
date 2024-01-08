@@ -106,9 +106,9 @@ export default function EmployeeSearch({ onSubmit }) {
                   <TableCell>Thimphu</TableCell>
                   <TableCell>
                     <div className="flex space-x-3">
-                    <Button variant="outline" size="icon"><Eye/>
+                    <Button variant="ghost" size="icon"><Eye/>
                     </Button>
-                    <Button variant="outline" size="icon"><Pencil/>
+                    <Button variant="ghost" size="icon"><Pencil/>
                     </Button>
                     </div>
                     </TableCell>
