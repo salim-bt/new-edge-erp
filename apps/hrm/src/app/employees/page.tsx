@@ -1,88 +1,91 @@
+"use client"
 
-/** @type {import('next').NextConfig} */
-const config = {
-  reactStrictMode: true,
-};
-
-
-// Add this
-export const metadata = () => {
-  return {
-    title: "My App",
-  };
-};
-
-import { useClient } from "./hooks/useClient";
-
-useClient(); // Add useClient hook 
-
-const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
-
-
-
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import {
+  Form,
   FormControl,
-  FormLabel
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export default function EmployeeSearch() {
-  
 
-  const employeeData = [
-    { name: 'Salim Pradhan', email: 'salimpradhan@gmail.com', department: 'Software', designation: 'Backend-Developer' },];
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  department: z.string().min(2, {
+    message: "Department must be at least 2 characters.",
+  }),
+});
+
+export default function EmployeeSearch({ onSubmit }) {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      department: "",
+    },
+  });
 
   return (
-    <div className="w-200 pl-96">
-      <Card className="w-[350px] mb-4">
-        <CardHeader>
-          <CardTitle>Employee Search</CardTitle>
-        </CardHeader>
-        <Card>
-          <form>
-            <FormControl className="ml-3 w-100 flex items-center flex-col">
-              <FormLabel className="ml-3 w-100" >
-                Name
-              </FormLabel>
-              <Input className="ml-2 flex-1 mb-2"/>
-
-              <FormLabel className="ml-3 w-100" >
-                Department
-              </FormLabel>
-              <Input className="ml-2 flex-1 mb-2" />
-
-              <FormLabel className="ml-3 w-100">
-                Designation
-              </FormLabel>
-              <Input className="mt-2 mb-2 flex-1" />
-            </FormControl>
-
-            <Button className="mt-4" type="submit">
-              Search
-            </Button>
-          </form>
-        </Card>
-      </Card>
-
-      <div className="w-3/4 pl-96">
-        <Card className="card w-1250  p-4 shadow-lg">
+    <div className="flex flex-col items-center ">
+      <div className="w-full md:w-4/6 p-4">
+        <Card className="card p-3">
+            <CardHeader>
+              <CardTitle>Searching Employee</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row">
+                <Form {...form} onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="flex-1 md:mr-2">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Employee name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name="department"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Department</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Software" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="ml-2 mt-7">
+                    <Button type="submit">Search</Button>
+                  </div>
+                </Form>
+              </div>
+            </CardContent>
+          </Card>
+      </div>
+      <div className="w-full md:w-4/6 p-4">
+        <Card className="p-4 shadow-lg">
           <CardHeader>
             <b>Employee Details</b>
           </CardHeader>
@@ -91,29 +94,26 @@ export default function EmployeeSearch() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
                   <TableHead>Department</TableHead>
                   <TableHead>Designation</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {employeeData.map((employee) => (
-                  <TableRow key={employee.email}>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.email}</TableCell>
-                    <TableCell>{employee.department}</TableCell>
-                    <TableCell>{employee.designation}</TableCell>
-                    <TableCell>
-                      {/* Add your actions here */}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                <TableRow>
+                  <TableCell>Salimd pradhan</TableCell>
+                  <TableCell>Software development</TableCell>
+                  <TableCell>Thimphu</TableCell>
+                  <TableCell>{/* Add your actions here */}</TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+ 
+
+
+);
 }
