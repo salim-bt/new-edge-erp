@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
+import { Eye, Pencil, Search } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -38,7 +38,7 @@ export default function EmployeeSearch({ onSubmit }) {
 
   return (
     <div className="flex flex-col items-center ">
-      <div className="w-full md:w-4/6 p-4">
+      <div className="w-full md:w-2/3 p-4">
         <Card className="card p-3">
             <CardHeader>
               <CardTitle>Searching Employee</CardTitle>
@@ -54,7 +54,7 @@ export default function EmployeeSearch({ onSubmit }) {
                         <FormItem>
                           <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Employee name" {...field} />
+                            <Input className="w-5/6" placeholder="Employee name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -69,15 +69,15 @@ export default function EmployeeSearch({ onSubmit }) {
                         <FormItem>
                           <FormLabel>Department</FormLabel>
                           <FormControl>
-                            <Input placeholder="Software" {...field} />
+                            <Input className="w-5/6" placeholder="Software" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="ml-2 mt-7">
-                    <Button type="submit">Search</Button>
+                  <div className="mt-7">
+                    <Button variant="outline" size="icon" type="submit"><Search/></Button>
                   </div>
                 </Form>
               </div>
@@ -104,7 +104,14 @@ export default function EmployeeSearch({ onSubmit }) {
                   <TableCell>Salimd pradhan</TableCell>
                   <TableCell>Software development</TableCell>
                   <TableCell>Thimphu</TableCell>
-                  <TableCell>{/* Add your actions here */}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-3">
+                    <Button variant="outline" size="icon"><Eye/>
+                    </Button>
+                    <Button variant="outline" size="icon"><Pencil/>
+                    </Button>
+                    </div>
+                    </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
