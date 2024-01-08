@@ -5,8 +5,8 @@ import { ModeToggle } from "./dark-mode-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { NavLink } from "./navlink";
+import { AuthButton } from "./auth-button";
 export async function Navbar() {
     const session = await getServerAuthSession();
 
@@ -95,7 +95,7 @@ export async function Navbar() {
                 ))}
             </ScrollArea>
             <Separator className="w-11/12 mx-auto my-3" />
-            <div className="flex flex-col items-start justify-center">
+            <div className="flex flex-col items-center justify-center">
                 {footerlinks.map((link) => (
                     <a
                         key={link.href}
@@ -106,17 +106,12 @@ export async function Navbar() {
                         <span className="text-md ml-2">{link.title}</span>
                     </a>
                 ))}
-                <Button
-                    variant="ghost"
-                    className="flex items-center justify-start p-2 w-2/3 rounded-md dark:text-gray-400 mx-2 my-3 hover:text-white dark:hover:bg-red-500  dark:hover:bg-white/20 transition-colors duration-500"
-                >
-                    <LogOutIcon className="w-6 h-6" />
-                    <span className="text-md ml-2">Logout</span>
-                </Button>
+                <AuthButton />
                 <div className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-3 dark:bg-black/10 darkL:hover:text-white dark:hover:bg-white/20 transition-colors duration-500">
                     <Avatar
                         className="w-10 h-10 rounded-md"
                     >
+                        {/* @ts-ignore */}
                         <AvatarImage src={session?.user?.image} alt="@shadcn" />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
@@ -129,4 +124,3 @@ export async function Navbar() {
         </div>
     </div>)
 }
-

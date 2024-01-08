@@ -31,6 +31,7 @@ export const env = createEnv({
     KEYCLOAK_CLIENT_SECRET: z.string(),
     KEYCLOAK_CLIENT_ID: z.string(),
     KEYCLOAK_ISSUER: z.string(),
+    REFRESH_TOKEN_URL: z.string(),
   },
 
   /**
@@ -54,6 +55,7 @@ export const env = createEnv({
     KEYCLOAK_CLIENT_SECRET: process.env.KEYCLOAK_CLIENT_SECRET,
     KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
     KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
+    REFRESH_TOKEN_URL: process.env.REFRESH_TOKEN_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -80,10 +80,6 @@ export default function StatusCards() {
                             />
                         </CardBody>
                         <CardFooter className="flex flex-col items-center rounded-2xl justify-between px-4">
-                            <Progress
-                                value={progress}
-                                color={progress < 50 ? 'success' : progress < 80 ? 'warning' : 'danger'}
-                            />
                             <div className="flex justify-between w-full px-2">
                                 <span className="text-md font-bold">{leave.current} Days</span>
                                 <span className="text-md font-bold">{leave.allowed} Days</span>
