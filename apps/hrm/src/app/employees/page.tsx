@@ -38,7 +38,7 @@ export default function EmployeeSearch({ onSubmit }) {
 
   return (
     <div className="flex flex-col items-center ">
-      <div className="w-full md:w-2/3 p-4">
+      <div className="w-full md:w-2/3 p-4 mt-5">
         <Card className="card p-3">
             <CardHeader>
               <CardTitle>Searching Employee</CardTitle>

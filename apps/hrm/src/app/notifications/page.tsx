@@ -10,7 +10,7 @@ export default function Notifications(){
         <div className="w-full md:w-4/6 p-4">
         <Card className="p-4 shadow-lg">
           <CardHeader>
-            <b>Employee Details</b>
+            <b>Leave Details</b>
           </CardHeader>
           <CardContent>
             <Table>
