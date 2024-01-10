@@ -83,7 +83,7 @@ export async function Navbar() {
                     <a
                         key={link.href}
                         href={link.href}
-                        className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-6 hover:text-white hover:text-purple-500 dark:hover:text-white  dark:hover:bg-white/20 transition-colors duration-300"
+                        className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-6 hover:text-gray hover:text-purple-500 dark:hover:text-white  dark:hover:bg-white/20 transition-colors duration-300"
 
                     >
                         {link.icon}
