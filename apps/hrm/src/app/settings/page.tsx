@@ -1,65 +1,48 @@
-import {
-    Card,
-    CardBody,
-    CardHeader,
-    Flex,
-    Table,
-    Tbody,
-    Td,
-    Tr
-} from '@chakra-ui/react';
-import { ClipboardCheck, MailCheck, Settings, UserCog } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHeader, TableRow } from '@/components/ui/table';
+import { ClipboardList, Cog, FileBadge, UserCog } from 'lucide-react';
+
 export default function Home() {
     return (  
-        <center>      
-            <Flex justifyContent="center" direction="column" alignItems="center" height="100vh" >
-                <Card p="4" shadow="lg" width="700px" className="card" mb="4">
+        <div className='flex flex-col items-center'>   
+        <div className='w-full md:w-1/2 p-4 mt-5'>
+            <Card className="card p-4 mb-4 shadow-lg">
                 <CardHeader>
                     <b>Admin Settings</b>
                 </CardHeader>
-                <CardBody>
-                    <Table variant="simple">
-                    {/* <Thead>
-                        <Tr>
-                        <Th> 
-                        
-                        </Th>
-                        <Th>Settings</Th>
-                        </Tr>
-                    </Thead> */}
-                    <Tbody>
-                        <Tr _hover={{ background: 'gray.100' }}>
-                            <Td>
-                            <Settings/>
-                            </Td>
-                        <Td>Profile Settings</Td>
-                        </Tr>
-                        <Tr _hover={{ background: 'gray.100' }}>
-                            <Td>
-                            <MailCheck/>
-                            </Td>
-                        <Td><a href="leaveConfig">Leave Configuration</a></Td>
-                        
-                        </Tr>
-                        <Tr _hover={{ background: 'gray.100' }}>
-                            <Td>
-                            <UserCog/>
-                            </Td>
-                        <Td>User Access and Permissions</Td>
-                        
-                        </Tr>
-                        <Tr _hover={{ background: 'gray.100' }}>
-                            <Td>
-                                <ClipboardCheck/>
-                            </Td>
-                        <Td>Reports and Analytics</Td>
-                        
-                        </Tr>
-                    </Tbody>
-                    </Table>
-                </CardBody>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                            <TableCell><Button variant="ghost" size="icon"><Cog/>
+                            </Button>
+                            </TableCell>
+                            <TableCell>Profile Settings</TableCell>
+                                </TableRow>
+                            <TableRow>
+                            <TableCell><Button variant="ghost" size="icon"><FileBadge/>
+                            </Button></TableCell>
+                            <TableCell>Leave Configuration</TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell><Button variant="ghost" size="icon"><UserCog/>
+                            </Button></TableCell>
+                            <TableCell>User Access and Permissions</TableCell>
+                            </TableRow>
+                            <TableRow>
+                            <TableCell><Button variant="ghost" size="icon"><ClipboardList/>
+                            </Button>  </TableCell>
+                            <TableCell>Reports and Analytics</TableCell>
+                            </TableRow>
+                        </TableBody>
+                        </Table>
+                    </CardContent>
                 </Card>
-            </Flex>
-        </center>
+                </div> 
+            </div>
     );
   }
