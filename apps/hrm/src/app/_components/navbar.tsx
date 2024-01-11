@@ -4,7 +4,6 @@ import { LayoutDashboardIcon, CogIcon, MailOpen, SearchIcon, BellIcon, Users2, N
 import { ModeToggle } from "./dark-mode-toggle";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { NavLink } from "./navlink";
 import { AuthButton } from "./auth-button";
 export async function Navbar() {
@@ -35,16 +34,6 @@ export async function Navbar() {
             title: "Teams",
             href: "/teams",
             icon: <GroupIcon className="w-6 h-6" />,
-        },
-        {
-            title: "Projects",
-            href: "/projects",
-            icon: <BookX className="w-6 h-6" />,
-        },
-        {
-            title: "Clients",
-            href: "/clients",
-            icon: <PersonStanding className="w-6 h-6" />,
         },
     ];
 
@@ -86,7 +75,7 @@ export async function Navbar() {
                         exact
                         key={link.href}
                         href={link.href}
-                        className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-6 hover:text-white hover:text-purple-500 dark:hover:text-white  dark:hover:bg-white/20 transition-colors duration-300"
+                        className="flex items-center justify-start p-2 w-11/12 rounded-md dark:text-gray-400 mx-2 my-6 hover:text-white hover:bg-purple-500 dark:hover:text-white  dark:hover:bg-white/20 transition-colors duration-300"
 
                     >
                         {link.icon}
