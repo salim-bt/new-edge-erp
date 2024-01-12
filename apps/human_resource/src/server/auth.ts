@@ -8,7 +8,9 @@ import KeyCloakProvider from "next-auth/providers/keycloak";
 import { env } from "@/env";
 import { db } from "@/server/db";
 import { Adapter } from "next-auth/adapters";
+// @ts-ignore
 import { jwtDecode } from "jwt-decode";
+import { JWT } from "next-auth/jwt";
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -27,14 +29,14 @@ declare module "next-auth" {
     }
 }
 
-async function refreshAccessToken(token) {
+async function refreshAccessToken(token: JWT) {
     const resp = await fetch(`${env.REFRESH_TOKEN_URL}`, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
         client_id: env.KEYCLOAK_CLIENT_ID,
         client_secret: env.KEYCLOAK_CLIENT_SECRET,
         grant_type: "refresh_token",
-        refresh_token: token.refresh_token,
+        refresh_token: token.refresh_token as string,
       }),
       method: "POST",
     });
@@ -123,6 +125,15 @@ export const authOptions: NextAuthOptions = {
             console.log("session", session);
             console.log("token", token);
             console.log("user", user);
+            const obj = {
+                ...session,
+                user: {
+                    ...session.user,
+                    id: user.id,
+                },
+            };
+            
+            console.log("obj", obj);
             return {
                 ...session,
                 user: {
