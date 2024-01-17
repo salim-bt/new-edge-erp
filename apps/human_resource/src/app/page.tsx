@@ -1,12 +1,13 @@
-import AuthButton from "@/components/auth/auth-button";
+import Greeting from "@/components/dashboard/greeting";
+import Status from "@/components/dashboard/status";
+import { Main } from "@/components/layout/main";
 
 export default async function Home() {
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <AuthButton />
-      </div>
-    </main>
+    <Main>
+        <Greeting />
+        <Status />
+    </Main>
   );
 }

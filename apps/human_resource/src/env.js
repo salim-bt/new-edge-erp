@@ -28,10 +28,9 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url()
     ),
-    KEYCLOAK_CLIENT_SECRET: z.string(),
-    KEYCLOAK_CLIENT_ID: z.string(),
-    KEYCLOAK_ISSUER: z.string(),
-    REFRESH_TOKEN_URL: z.string(),
+    NEXTAUTH_KEYCLOAK_CLIENT_SECRET: z.string(),
+    NEXTAUTH_KEYCLOAK_CLIENT_ID: z.string(),
+    NEXTAUTH_KEYCLOAK_ISSUER: z.string().url(),
   },
 
   /**
@@ -40,7 +39,11 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_MINIO_ENDPOINT: z.string().url(),
+    NEXT_PUBLIC_MINIO_ACCESS_KEY: z.string(),
+    NEXT_PUBLIC_MINIO_SECRET_KEY: z.string(),
+    NEXT_PUBLIC_MINIO_PORT:z.string(),
+    NEXT_PUBLIC_ATTACHMENT_BUCKET: z.string(),
   },
 
   /**
@@ -52,10 +55,14 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    KEYCLOAK_CLIENT_SECRET: process.env.KEYCLOAK_CLIENT_SECRET,
-    KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID,
-    KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
-    REFRESH_TOKEN_URL: process.env.REFRESH_TOKEN_URL,
+    NEXTAUTH_KEYCLOAK_CLIENT_SECRET:process.env.NEXTAUTH_KEYCLOAK_CLIENT_SECRET,
+    NEXTAUTH_KEYCLOAK_CLIENT_ID: process.env.NEXTAUTH_KEYCLOAK_CLIENT_ID,
+    NEXTAUTH_KEYCLOAK_ISSUER: process.env.NEXTAUTH_KEYCLOAK_ISSUER,
+    NEXT_PUBLIC_MINIO_ENDPOINT: process.env.MINIO_ENDPOINT,
+    NEXT_PUBLIC_MINIO_ACCESS_KEY: process.env.MINIO_ACCESS_KEY,
+    NEXT_PUBLIC_MINIO_SECRET_KEY: process.env.MINIO_SECRET_KEY,
+    NEXT_PUBLIC_MINIO_PORT: process.env.MINIO_PORT,
+    NEXT_PUBLIC_ATTACHMENT_BUCKET: process.env.ATTACHMENT_BUCKET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
