@@ -1,9 +1,8 @@
 import "@/styles/globals.css";
 
+import { TRPCReactProvider } from "@/trpc/react";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-
-import { TRPCReactProvider } from "@/trpc/react";
 import { Navbar } from "./_components/navbar";
 import { ThemeProvider } from "./_components/theme-provider";
 const inter = Inter({
