@@ -20,7 +20,6 @@ declare module 'next-auth' {
 
 
 const config: NextAuthConfig = {
-    debug: true,
     providers:[
         Keycloak({
             clientId: process.env.NEXTAUTH_KEYCLOAK_CLIENT_ID,
@@ -59,32 +58,30 @@ const config: NextAuthConfig = {
             return token;
         },
     },
-    events:{
-        // createUser: async (message) => {
-        //     console.log("createUser", message);
-        // },
-        // linkAccount: async (message) => {
-        //     console.log("linkAccount", message);
-        // },
-        // session: async (message) => {
-        //     console.log("session", message);
-        // },
-        // signIn: async (message) => {
-        //     console.log("signIn", message);
-        // },
-        // signOut: async (message) => {
-        //     console.log("signOut", message);
-        // },
-        // updateUser: async (message) => {
-        //     console.log("updateUser", message);
-        // },
-    },
+    // events:{
+    //     // createUser: async (message) => {
+    //     //     console.log("createUser", message);
+    //     // },
+    //     // linkAccount: async (message) => {
+    //     //     console.log("linkAccount", message);
+    //     // },
+    //     // session: async (message) => {
+    //     //     console.log("session", message);
+    //     // },
+    //     // signIn: async (message) => {
+    //     //     console.log("signIn", message);
+    //     // },
+    //     // signOut: async (message) => {
+    //     //     console.log("signOut", message);
+    //     // },
+    //     // updateUser: async (message) => {
+    //     //     console.log("updateUser", message);
+    //     // },
+    // },
     trustHost:true,
-    logger: {
-        error: console.error,
-        warn: console.warn,
-        debug: console.debug,
-    },
+    // logger: {
+    //     error: console.error,
+    // },
 }
 
 export const {

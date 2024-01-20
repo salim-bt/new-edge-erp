@@ -1,11 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  CarrotIcon,
-  ChevronDownIcon,
-  FoldHorizontalIcon,
-} from "lucide-react"
+import * as React from "react";
+import { CarrotIcon, ChevronDownIcon, FoldHorizontalIcon } from "lucide-react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,10 +13,9 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -29,8 +24,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -38,179 +32,57 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { api } from "@/trpc/react";
 
 type Notification = {
-    id: number;
-    message: string;
-    description: string;
-    date: string;
+  id: string;
+  title: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-const data: Notification[] = [
-    {
-        id: 1,
-        message: "Leave Request Approved",
-        description: "Your leave request has been approved.",
-        date: "2021-10-01"
-    },
-    {
-        id: 2,
-        message: "New Task Assigned",
-        description: "You have been assigned a new task.",
-        date: "2021-10-02"
-    },
-    {
-        id: 3,
-        message: "Meeting Reminder",
-        description: "Reminder: Team meeting at 2 PM.",
-        date: "2021-10-03"
-    },
-    {
-        id: 4,
-        message: "Expense Report Submitted",
-        description: "Your expense report has been submitted.",
-        date: "2021-10-04"
-    },
-    {
-        id: 5,
-        message: "Project Deadline Extended",
-        description: "The project deadline has been extended.",
-        date: "2021-10-05"
-    },
-    {
-        id: 6,
-        message: "New Announcement",
-        description: "Important announcement: Company-wide event.",
-        date: "2021-10-06"
-    },
-    {
-        id: 7,
-        message: "Performance Review Reminder",
-        description: "Reminder: Performance review next week.",
-        date: "2021-10-07"
-    },
-    {
-        id: 8,
-        message: "Training Session Scheduled",
-        description: "A training session has been scheduled.",
-        date: "2021-10-08"
-    },
-    {
-        id: 9,
-        message: "New Employee Onboarded",
-        description: "A new employee has been onboarded.",
-        date: "2021-10-09"
-    },
-    {
-        id: 10,
-        message: "System Maintenance",
-        description: "System maintenance scheduled for tomorrow.",
-        date: "2021-10-10"
-    },
-    // Add 10 more unique data entries here
-    {
-        id: 11,
-        message: "New Feature Released",
-        description: "Exciting new feature now available.",
-        date: "2021-10-11"
-    },
-    {
-        id: 12,
-        message: "Task Completed",
-        description: "Congratulations! Task successfully completed.",
-        date: "2021-10-12"
-    },
-    {
-        id: 13,
-        message: "Holiday Notice",
-        description: "Upcoming holiday notice: Office closed.",
-        date: "2021-10-13"
-    },
-    {
-        id: 14,
-        message: "Team Building Event",
-        description: "Team building event next week.",
-        date: "2021-10-14"
-    },
-    {
-        id: 15,
-        message: "New Project Started",
-        description: "Exciting new project has started.",
-        date: "2021-10-15"
-    },
-    {
-        id: 16,
-        message: "Training Session Reminder",
-        description: "Reminder: Training session tomorrow.",
-        date: "2021-10-16"
-    },
-    {
-        id: 17,
-        message: "Task Deadline Approaching",
-        description: "Reminder: Task deadline approaching.",
-        date: "2021-10-17"
-    },
-    {
-        id: 18,
-        message: "New Announcement",
-        description: "Important announcement: Company update.",
-        date: "2021-10-18"
-    },
-    {
-        id: 19,
-        message: "Leave Request Submitted",
-        description: "Your leave request has been submitted.",
-        date: "2021-10-19"
-    },
-    {
-        id: 20,
-        message: "Meeting Rescheduled",
-        description: "The meeting has been rescheduled.",
-        date: "2021-10-20"
-    },
-];
-    
 export const columns: ColumnDef<Notification>[] = [
   {
     id: "message",
     header: "Message",
     cell: ({ row }) => {
-      const notification = row.original
+      const notification = row.original;
 
       return (
         <div className="flex items-center space-x-2">
           <CarrotIcon className="h-4 w-4 text-blue-500" />
           <div>
-            <div className="font-medium">{notification.message}</div>
+            <div className="font-medium">{notification.title}</div>
             <div className="text-sm text-muted-foreground">
               {notification.description}
             </div>
           </div>
         </div>
-      )
+      );
     },
   },
   {
     id: "date",
     header: "Date",
     cell: ({ row }) => {
-      const notification = row.original
+      const notification = row.original;
 
       return (
         <div className="flex items-center space-x-2">
           <div className="text-sm text-muted-foreground">
-            {notification.date}
+            {notification.createdAt.toDateString()}
           </div>
         </div>
-      )
+      );
     },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const notification = row.original
+      const notification = row.original;
 
       return (
         <DropdownMenu>
@@ -223,39 +95,43 @@ export const columns: ColumnDef<Notification>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(notification.id.toString())}
+              onClick={() =>
+                navigator.clipboard.writeText(notification.id.toString())
+              }
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View Notification</DropdownMenuItem>
             <DropdownMenuItem
-                className="text-red-500"
-                onClick={
-                    () => {
-                        data.splice(data.indexOf(notification), 1);
-                        console.log(data);
-                    }
-                }
-            >Delete Notification</DropdownMenuItem>
+              className="text-red-500"
+              onClick={() => {
+                const mut = api.notification.deleteNotification.useMutation();
+                mut.mutate({
+                  notificationId: notification.id.toString(),
+                });
+              }}
+            >
+              Delete Notification
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 export function NotificationTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+    [],
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const { isFetching, data , error } = api.notification.getNotifications.useQuery();
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -271,7 +147,7 @@ export function NotificationTable() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
 
   return (
     <div className="w-full">
@@ -298,7 +174,7 @@ export function NotificationTable() {
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
-                )
+                );
               })}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -315,16 +191,26 @@ export function NotificationTable() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {
+              isFetching && !table.getRowModel().rows?.length ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -334,7 +220,7 @@ export function NotificationTable() {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -346,7 +232,7 @@ export function NotificationTable() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No notifications found.
                 </TableCell>
               </TableRow>
             )}
@@ -378,5 +264,5 @@ export function NotificationTable() {
         </div>
       </div>
     </div>
-  )
+  );
 }

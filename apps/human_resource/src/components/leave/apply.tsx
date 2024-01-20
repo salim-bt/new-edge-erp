@@ -18,6 +18,8 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
+  Sheet
 } from "../ui/sheet";
 const lemon = Lemon({
   subsets: ["latin-ext"],
@@ -36,10 +38,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { CalendarIcon, EyeIcon } from "lucide-react";
+import { CalendarIcon, EyeIcon, ArrowUpRight } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { ScrollArea } from "../ui/scroll-area";
 import { Textarea } from "../ui/textarea";
 import { api } from "@/trpc/react";
@@ -56,6 +58,7 @@ const ApplyLeaveSchema = z.object({
 
 export default function ApplyLeave() {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = React.useState(false);
   const {toast} = useToast();
 
   const form = useForm<z.infer<typeof ApplyLeaveSchema>>({
@@ -79,6 +82,7 @@ export default function ApplyLeave() {
           description: "Your leave application has been submitted",
           className: "bg-green-500"
         });
+        setIsOpen(false);
       },
     }
   );
@@ -93,7 +97,6 @@ export default function ApplyLeave() {
       className: "bg-blue-500"
     });
     submit.mutate({
-      userId: session?.user?.id ?? "",
       leaveTypeId: data.typeId,
       startDate: data.date.from,
       endDate: data.date.to,
@@ -103,7 +106,19 @@ export default function ApplyLeave() {
   }
 
   return (
-    <SheetContent>
+    <Sheet
+      open={isOpen}
+      onOpenChange={(open) => setIsOpen(open)}
+    >
+          <SheetTrigger>
+            <div
+                className="flex items-center justify-between px-4 py-2 bg-blue-600 rounded-lg shadow-md text-white text-sm font-medium"
+            >
+              <span className="mr-2">Apply Leave</span>
+              <ArrowUpRight className="w-5 h-5" />
+            </div>
+          </SheetTrigger>
+          <SheetContent>
       <SheetHeader>
         <SheetTitle className={cn(lemon.className, " text-2xl")}>
           Apply Leave
@@ -118,7 +133,7 @@ export default function ApplyLeave() {
             className="space-y-6 px-2"
           >
             <div
-              className={`text-2xl font-semibold text-gray-800 my-10 ${lemon.className}`}
+              className={`text-md font-semibold text-gray-800 ${lemon.className}`}
             >
               {session?.user?.name}
             </div>
@@ -274,5 +289,6 @@ export default function ApplyLeave() {
         </SheetClose>
       </SheetFooter>
     </SheetContent>
+        </Sheet>
   );
 }

@@ -32,32 +32,26 @@ const notificationRouter = createTRPCRouter({
     getNotifications: protectedProcedure
         .query(async ({ ctx }) => {
             const {db} = ctx;
-            return db.notification.findMany();
-        }),
-    getNotificationByUserId: protectedProcedure
-        .input(z.object({
-            userId: z.string().uuid(),
-        }))
-        .query(async ({ ctx, input }) => {
-            const { userId } = input;
-            const {db} = ctx;
-            return db.notification.findMany({
-                where:{
-                    users:{
-                        some:{
-                            id:userId
+            const userId = ctx.session.user.id;
+            return await db.notification.findMany(
+                {
+                    where:{
+                        users:{
+                            every:{
+                                id:userId
+                            }
                         }
                     }
                 }
-            });
+            );
         }),
     deleteNotification: protectedProcedure
         .input(z.object({
             notificationId: z.string().uuid(),
-            userId: z.string().uuid(),
         }))
         .mutation(async ({ ctx, input }) => {
-            const { userId, notificationId } = input;
+            const { notificationId } = input;
+            const userId = ctx.session.user.id;
             const {db} = ctx;
             return db.notification.delete({
                 where:{
@@ -90,4 +84,4 @@ const notificationRouter = createTRPCRouter({
         }),
 });
 
-export default notificationRouter;
+export {notificationRouter};

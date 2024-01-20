@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
 
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { cookies } from "next/headers";
 import { Shell } from "@/components/layout";
 import { TRPCReactProvider } from "@/trpc/react";
 import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-sans",
 });
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={`font-sans ${manrope.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <Shell>
             {children}

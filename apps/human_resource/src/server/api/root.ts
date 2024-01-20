@@ -2,6 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import { leaveRouter } from "./routers/leave";
 import { leaveTypeRouter } from "./routers/leaveType";
 import { leaveBalanceRouter } from "./routers/leave-balance";
+import { notificationRouter } from "./routers/notification";
 /**
  * This is the primary router for your server.
  *
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   leave: leaveRouter,
   leaveType: leaveTypeRouter,
   leaveBalance: leaveBalanceRouter,
+  notification: notificationRouter,
 });
 
 // export type definition of API

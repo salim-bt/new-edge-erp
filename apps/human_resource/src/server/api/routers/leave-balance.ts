@@ -16,12 +16,9 @@ const leaveBalanceSchema = z.object({
 
 const leaveBalanceRouter = createTRPCRouter({
   getLeaveBalance: protectedProcedure
-    .input(z.object({
-      userId: z.string(),
-    }))
     .query(async ({ ctx, input }) => {
-      const { userId } = input;
       const { db } = ctx;
+      const userId = ctx.session.user.id;
       const data = await db.leaveBalance.findMany({
         where: {
           userId,
