@@ -1,8 +1,9 @@
-import prisma from "../DB/db.config.js";
+import prisma from "../utils/db.config.js";
 
 //CREATE
 export const createStockIn = async (req, res) => {
-  const { item_id, qty } = req.body;
+  try{
+    const { item_id, qty, total_price ,created_at} = req.body;
 
   //* increment qty_on_hand in Items
   await prisma.item.update({
@@ -19,7 +20,9 @@ export const createStockIn = async (req, res) => {
   const newStockIn = await prisma.stockIn.create({
     data: {
       item_id:Number(item_id),
-      qty:Number(qty)
+      qty:Number(qty),
+      total_price:Number(total_price),
+      created_at: new Date(created_at),
     },
   });
 
@@ -30,7 +33,7 @@ export const createStockIn = async (req, res) => {
       data: {
         item_id: Number(item_id),
         stock_in_id: newStockIn.id,
-        status_details:"Item is purchased and in stock "
+        status_details:"Item is purchased and in stock"
       },
     });
     itemInstances.push(newItemInstance);
@@ -42,28 +45,51 @@ export const createStockIn = async (req, res) => {
     msg: "Item stocked in successfully!!",
   });
 
+  }catch(error){
+    console.error("Error: ", error);
+    return res.status(500).json({ status: 500, msg: error });
+  }
 };
 
 //READ
 export const fetchStockIns = async (req, res) => {
-  const stockIns = await prisma.stockIn.findMany({
-    include:{
-      ItemInstance_ids:true
-    }
-  });
-  return res.json({ status: 200, data: stockIns });
+  try{
+    const stockIns = await prisma.stockIn.findMany({
+      include:{
+       item:{
+        include:{
+          category:true
+        }
+       }
+      }
+    });
+    return res.json({ status: 200, data: stockIns });
+  }catch(error){
+    console.error("Error: ", error);
+    return res.status(500).json({ status: 500, msg: error });
+  }
 };
 export const fetchStockIn = async (req, res) => {
-  const StockInId = req.params.id;
+  try{
+    const StockInId = req.params.id;
   const StockIn = await prisma.stockIn.findFirst({
     where: {
       id: StockInId,
     },
     include:{
-      ItemInstance_ids:true
+      ItemInstance_ids:true,
+      item:{
+        include:{
+          category:true
+        }
+       }
     }
   });
   return res.json({ status: 200, data: StockIn });
+  }catch(error){
+    console.error("Error: ", error);
+    return res.status(500).json({ status: 500, msg: error });
+  }
 };
 
 
@@ -148,3 +174,7 @@ export const deleteStockIn = async (req, res) => {
   });
   return res.json({ status: 200, message: "StockIn deleted successfully" });
 };
+
+
+
+

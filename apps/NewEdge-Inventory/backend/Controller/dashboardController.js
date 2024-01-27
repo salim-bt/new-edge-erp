@@ -1,4 +1,4 @@
-import prisma from "../DB/db.config.js";
+import prisma from "../utils/db.config.js";
 import { startOfDay, subWeeks, subMonths, eachWeekOfInterval, eachMonthOfInterval, eachDayOfInterval, format, startOfYear } from 'date-fns';
 
 //---CARD 1
@@ -47,17 +47,30 @@ export const getTotalTransaction = async (req, res) => {
 
 
 //---CARD 2
-export const getTotalCategoriesAndItems = async (req, res) => {
+export const getTotalCategoriesAndItems = async (req, res) => { 
   try {
+    // Fetch total categories
     const totalCategories = await prisma.category.count();
+
+    // Fetch total items
     const totalItems = await prisma.item.count();
 
-    return res.json({ status: 200, data: { totalCategories, totalItems } });
+    // Fetch recent 5 items added
+    const recentItems = await prisma.item.findMany({
+      take: 3,
+      orderBy: { created_at: 'desc' }, // Assuming you have a 'created_at' field in the Item model
+    });
+
+    return res.json({
+      status: 200,
+      data: { totalCategories, totalItems, recentItems },
+    });
   } catch (error) {
-    console.error("Error fetching total categories and items:", error);
+    console.error("Error fetching total categories, items, and recent items:", error);
     return res.status(500).json({ status: 500, msg: "Internal server error" });
   }
 };
+
 
 
 //---CARD 3

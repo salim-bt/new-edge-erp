@@ -4,7 +4,7 @@ import {getTotalCategoriesAndItems, getTotalTransaction,getTopRecentTransactions
 const dashboardRoutes = Router();
 
 //For dashboard card 1
-dashboardRoutes.get("/transactionNo",getTotalTransaction);
+dashboardRoutes.get("/transactionNo",getTotalTransaction); //?timeRange=day
 
 //For dashboard card 2
 dashboardRoutes.get("/category_item_count",getTotalCategoriesAndItems);
@@ -14,10 +14,6 @@ dashboardRoutes.get("/graph",getGraphData); //?timePeriod=
 
 //For dashboard card 4
 dashboardRoutes.get("/recentTransaction",getTopRecentTransactions);
-
-
-
-
 
 
 export default dashboardRoutes;
