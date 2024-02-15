@@ -1,13 +1,6 @@
 import prisma from "../utils/db.config.js";
 import fs from 'fs';
-import { Client } from "minio";
-const minioClient = new Client({
-    endPoint: '192.168.131.45',   //192.168.131.225
-    port: 9000, 
-    useSSL: false, 
-    accessKey: 'T7Lkgx2o2VhJ4ImC4Fx3',
-    secretKey: '0SrFBOLulHLbPYVV6pcHpx1Zxh4LvG4GdIdt6tVd',
-});
+import minioClient from "../utils/minioClient.js";
 
 
 //CREATE
@@ -16,15 +9,22 @@ export const createItem = async (req, res) => {
     const { category_id, name, unit, description, brand, unit_price } = req.body;
     const file = req.file;
 
-    if (!file) {
-      return res.json({ status: false, message: 'No file uploaded' });
+    let url = null; // Initialize url variable
+
+    if (file) {
+      // If file is uploaded
+      try {
+        const newFileName = await handleImageUpload(file, name, brand);
+        url = await minioClient.presignedGetObject('inventory', newFileName);
+        console.log(`Pre-signed URL: ${url}`);
+      } catch (error) {
+        console.error(error);
+        await handleImageUploadError(file);
+        return res.status(500).json({ status: 500, msg: `Error creating item. ${error.message}` });
+      }
     }
 
     try {
-      const newFileName = await handleImageUpload(file, name, brand);
-      const url = await minioClient.presignedGetObject('inventory', newFileName);
-      console.log(`Pre-signed URL: ${url}`);
-
       // Increment item counter in category
       await prisma.category.update({
         where: {
@@ -52,10 +52,7 @@ export const createItem = async (req, res) => {
       return res.json({ status: 200, data: newItem, msg: 'Item Created!' });
     } catch (error) {
       console.error(error);
-
-      // Handle cleanup (delete local file) and return error response
-      await handleImageUploadError(file);
-      return res.status(500).json({ status: 500, msg: `Error creating item. ${error.message}` });
+      return res.status(500).json({ status: 500, msg: `Internal server error. ${error.message}` });
     }
   } catch (error) {
     console.error(error);
@@ -91,8 +88,6 @@ async function deleteLocalImage(localImageName) {
     });
   });
 }
-
-
 
 //READ
 export const fetchItems = async (req, res) => {

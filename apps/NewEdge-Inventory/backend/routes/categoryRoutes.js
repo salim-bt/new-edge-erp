@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import {createCategory,fetchCategories,fetchCategoriess,fetchCategory,updateCategory,deleteCategory, searchCategory} from '../Controller/categoryController.js'
+import {createCategory,fetchCategories,fetchCategory,updateCategory,deleteCategory, searchCategory} from '../Controller/categoryController.js'
 import multer from "multer";
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,7 +19,7 @@ categoryRoutes.get("/search",searchCategory); //?name=----
 
 categoryRoutes.post("/",upload.single('image'),createCategory);
 categoryRoutes.get("/",fetchCategories);
-categoryRoutes.get("/t",fetchCategoriess);
+//categoryRoutes.get("/t",fetchCategoriess);
 
 categoryRoutes.get("/:id",fetchCategory);
 categoryRoutes.put("/:id",upload.single('image'),updateCategory);

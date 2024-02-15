@@ -1,88 +1,138 @@
 import prisma from "../utils/db.config.js";
 import fs from 'fs';
-import { Client } from "minio";
-const minioClient = new Client({
-    endPoint: '127.0.0.1', //192.168.131.31   
-    port: 9000, 
-    useSSL: false, 
-    accessKey: 'T7Lkgx2o2VhJ4ImC4Fx3',
-    secretKey: '0SrFBOLulHLbPYVV6pcHpx1Zxh4LvG4GdIdt6tVd',
-});
+import minioClient from "../utils/minioClient.js";
+
 
 //CATEGORY
+// export const createCategory = async (req, res) => {
+//   try {
+//     const { name, description } = req.body;
+//     const file = req.file;
 
+//     console.log(req)
+
+//     if (!file) {
+//       return res.json({ status: false, message: 'No file uploaded' });
+//     }
+
+//     // Check if a category with the same name already exists
+//     const existingCategory = await prisma.category.findUnique({
+//       where: {
+//         name: name,
+//       },
+//     });
+
+//     if (existingCategory) {
+//       // Delete the local file
+//       fs.unlink(`public/category/${file.originalname}`, (err1) => {
+//         if (err1) {
+//           console.log(err1);
+//         } else {
+//           console.log('Local file deleted successfully.');
+//         }
+//       });
+
+//       return res.status(400).json({ status: 400, msg: 'Category with this name already exists. Please enter another name.' });
+//     }
+
+//     // Extract the file extension from the original filename
+//     const lastDotIndex = file.originalname.lastIndexOf('.');
+//     const fileExtension = file.originalname.slice(lastDotIndex + 1);
+
+//     // Create a new filename with the desired format (e.g., replacing spaces with underscores)
+//     //const newFileName = `${name.replace(/ /g, '_')}_image.${fileExtension}`;
+//     const newFileName = `${name.replace(/ /g, '_')}_image.${fileExtension}`;
+
+//     try {
+//       await minioClient.fPutObject('inventory-category', `${newFileName}`, `public/category/${file.originalname}`);
+//     } catch (uploadError) {
+//       console.error(uploadError);
+//       fs.unlink(`public/category/${file.originalname}`, (err3) => {
+//         if (err3) {
+//           console.error(err3);
+//         } else {
+//           console.log('Local file deleted successfully.');
+//         }
+//       });
+//       return res.status(500).json({ status: 500, msg: `Error uploading file to Minio. ${uploadError.message}` });
+//     }
+
+//     // Delete the local file after successful Minio upload
+//     fs.unlink(`public/category/${file.originalname}`, (err3) => {
+//       if (err3) {
+//         console.error(err3);
+//       } else {
+//         console.log('Local file deleted successfully.');
+//       }
+//     });
+
+//     const url = await minioClient.presignedGetObject('inventory-category', newFileName);
+//     console.log(`Pre-signed URL: ${url}`);
+
+//     const newCategory = await prisma.category.create({
+//       data: {
+//         name: name,
+//         description: description,
+//         image: url,
+//       },
+//     });
+//     return res.status(200).json({ status: 200, data: newCategory, msg: 'Category Created' });
+//   } catch (error) {
+//     console.error('Error: ', error);
+//     return res.status(500).json({ status: 500, msg: 'Internal server error' });
+//   }
+// };
 export const createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
     const file = req.file;
 
-    console.log(req)
+    let url = null; // Initialize url variable
 
-    if (!file) {
-      return res.json({ status: false, message: 'No file uploaded' });
-    }
+    if (file) {
+      // If file is uploaded
+      // Extract the file extension from the original filename
+      const lastDotIndex = file.originalname.lastIndexOf('.');
+      const fileExtension = file.originalname.slice(lastDotIndex + 1);
 
-    // Check if a category with the same name already exists
-    const existingCategory = await prisma.category.findUnique({
-      where: {
-        name: name,
-      },
-    });
+      // Create a new filename with the desired format (e.g., replacing spaces with underscores)
+      const newFileName = `${name.replace(/ /g, '_')}_image.${fileExtension}`;
 
-    if (existingCategory) {
-      // Delete the local file
-      fs.unlink(`public/category/${file.originalname}`, (err1) => {
-        if (err1) {
-          console.log(err1);
-        } else {
-          console.log('Local file deleted successfully.');
-        }
-      });
+      try {
+        await minioClient.fPutObject('inventory-category', `${newFileName}`, `public/category/${file.originalname}`);
+        // Delete the local file after successful Minio upload
+        fs.unlink(`public/category/${file.originalname}`, (err3) => {
+          if (err3) {
+            console.error(err3);
+          } else {
+            console.log('Local file deleted successfully.');
+          }
+        });
 
-      return res.status(400).json({ status: 400, msg: 'Category with this name already exists. Please enter another name.' });
-    }
-
-    // Extract the file extension from the original filename
-    const lastDotIndex = file.originalname.lastIndexOf('.');
-    const fileExtension = file.originalname.slice(lastDotIndex + 1);
-
-    // Create a new filename with the desired format (e.g., replacing spaces with underscores)
-    //const newFileName = `${name.replace(/ /g, '_')}_image.${fileExtension}`;
-    const newFileName = `${name.replace(/ /g, '_')}_image.${fileExtension}`;
-
-    try {
-      await minioClient.fPutObject('inventory-category', `${newFileName}`, `public/category/${file.originalname}`);
-    } catch (uploadError) {
-      console.error(uploadError);
-      fs.unlink(`public/category/${file.originalname}`, (err3) => {
-        if (err3) {
-          console.error(err3);
-        } else {
-          console.log('Local file deleted successfully.');
-        }
-      });
-      return res.status(500).json({ status: 500, msg: `Error uploading file to Minio. ${uploadError.message}` });
-    }
-
-    // Delete the local file after successful Minio upload
-    fs.unlink(`public/category/${file.originalname}`, (err3) => {
-      if (err3) {
-        console.error(err3);
-      } else {
-        console.log('Local file deleted successfully.');
+        url = await minioClient.presignedGetObject('inventory-category', newFileName);
+        console.log(`Pre-signed URL: ${url}`);
+      } catch (uploadError) {
+        console.error(uploadError);
+        fs.unlink(`public/category/${file.originalname}`, (err3) => {
+          if (err3) {
+            console.error(err3);
+          } else {
+            console.log('Local file deleted successfully.');
+          }
+        });
+        return res.status(500).json({ status: 500, msg: `Error uploading file to Minio. ${uploadError.message}` });
       }
-    });
+    }
 
-    const url = await minioClient.presignedGetObject('inventory-category', newFileName);
-    console.log(`Pre-signed URL: ${url}`);
-
+    // Create category even if no file is uploaded
     const newCategory = await prisma.category.create({
       data: {
         name: name,
         description: description,
-        image: url,
+        image: url, // Assign the URL if it exists, otherwise, it remains null
       },
     });
+
     return res.status(200).json({ status: 200, data: newCategory, msg: 'Category Created' });
   } catch (error) {
     console.error('Error: ', error);
@@ -90,48 +140,35 @@ export const createCategory = async (req, res) => {
   }
 };
 
-export const fetchCategoriess = async (req, res) => {
-  try{
-    const page = req.query.page || 1;
-  const itemsPerPage = 10;
-  const skip = (page - 1) * itemsPerPage;
 
-  if(req.query.page>=1){
-    const categories = await prisma.category.findMany({
-      // include: {
-      //   item: {
-      //     orderBy: {
-      //       name: "asc",
-      //     },
-      //   },
-      // },
-      orderBy: {
-        name: "asc",
-      },
-      skip,
-      take: itemsPerPage,
-    });
-    return res.json({ status: 200, data: categories });
-  }
+// export const fetchCategoriess = async (req, res) => {
+//   try{
+//     const page = req.query.page || 1;
+//   const itemsPerPage = 10;
+//   const skip = (page - 1) * itemsPerPage;
 
-  const categories = await prisma.category.findMany({
-    // include: {
-    //   item: {
-    //     orderBy: {
-    //       name: "asc",
-    //     },
-    //   },
-    // },
-    orderBy: {
-      name: "asc",
-    },
-  });
-  return res.json({ status: 200, data: categories });
-  }catch(error){
-    console.error(error);
-    return res.status(500).json({ status: 500, msg: "Internal server error" });
-  }
-};
+//   if(req.query.page>=1){
+//     const categories = await prisma.category.findMany({
+//       orderBy: {
+//         name: "asc",
+//       },
+//       skip,
+//       take: itemsPerPage,
+//     });
+//     return res.json({ status: 200, data: categories });
+//   }
+
+//   const categories = await prisma.category.findMany({
+//     orderBy: {
+//       name: "asc",
+//     },
+//   });
+//   return res.json({ status: 200, data: categories });
+//   }catch(error){
+//     console.error(error);
+//     return res.status(500).json({ status: 500, msg: "Internal server error" });
+//   }
+// };
 
 export const fetchCategories = async (req, res) => {
   try{
@@ -175,8 +212,6 @@ export const fetchCategories = async (req, res) => {
     return res.status(500).json({ status: 500, msg: "Internal server error" });
   }
 };
-
-
 
 export const fetchCategory = async (req, res) => {
 try{
