@@ -17,6 +17,8 @@ Follow the following steps to set up project:
 6.Install the dotenv package
     npm i dotenv
 7.Create .env file
+8.Install: -
+     npm install date-fns
 
 Follow the following steps to connect with prisma:
 1.Install the prisma
@@ -34,6 +36,15 @@ SET UP COMPLETE :))
 
 To run server use command
     npm run server
+
+
+
+make .env file:
+DATABASE_URL="postgresql://postgres:root@localhost:5432/invDB?schema=public"
+
+# DATABASE_URL='postgres://postgres.orojqhimfmkoexmztite:eF,5zrdFNL(N&83@aws-0-ap-south-1.pooler.supabase.com:5432/postgres'
+
+IP='192.168.131.122'
 
 
 
